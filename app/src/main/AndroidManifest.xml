@@ -14,13 +14,13 @@
         android:theme="@style/Theme.Organizze"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.CadastroActivity"
+            android:name=".Activity.activity.CadastroActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".Activity.activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.activity.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Intro">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.example.organizze.Activity;
+package com.example.organizze.Activity.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

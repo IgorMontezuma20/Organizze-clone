@@ -1,19 +1,12 @@
-package com.example.organizze;
-
-import static android.content.ContentValues.TAG;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.organizze.Activity.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.organizze.Activity.CadastroActivity;
-import com.example.organizze.Activity.LoginActivity;
-import com.example.organizze.databinding.ActivityMainBinding;
+import com.example.organizze.Activity.activity.CadastroActivity;
+import com.example.organizze.Activity.activity.LoginActivity;
+import com.example.organizze.R;
 import com.example.organizze.databinding.IntroCadastroBinding;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
