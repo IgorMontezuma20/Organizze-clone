@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/igorm/AndroidStudioProjects/Organizze-clone/app/src/main/res/layout/activity_cadastro.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/igorm/AndroidStudioProjects/Organizze-clone/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/igorm/AndroidStudioProjects/Organizze-clone/app/src/main/res/layout/intro_cadastro.xml" value="0.21388888888888888" />
         <entry key="..\:/Users/imiranda/AndroidStudioProjects/Organizze/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/imiranda/AndroidStudioProjects/Organizze/app/src/main/res/layout/fragment_intro_cadastro.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/imiranda/AndroidStudioProjects/Organizze/app/src/main/res/layout/intro_1.xml" value="0.365625" />

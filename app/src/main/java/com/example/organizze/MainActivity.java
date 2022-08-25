@@ -21,7 +21,7 @@ import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 public class MainActivity extends IntroActivity {
 
     private IntroCadastroBinding binding;
-    private Button btnCadastrar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,20 +69,32 @@ public class MainActivity extends IntroActivity {
         );
 
 
-        binding.btnCadastrar.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               startActivity(new Intent(MainActivity.this, CadastroActivity.class));
-               Log.d("TAG", "onClick: Foi");
-           }
-        });
-    }
-
-    public void btnEntrar(View view){
 
     }
 
-    public void btnCadastrar(View view){
+    public void btnEntrar (View view) {
+        startActivity(new Intent(this, LoginActivity.class));
 
     }
+
+    public void btnCadastrar(View view) {
+        startActivity(new Intent(this, CadastroActivity.class));
+
+    }
+
+//    public void verificarUsuarioLogado() {
+//        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+//        //autenticacao.signOut();
+//
+//        if (autenticacao.getCurrentUser() != null){
+//            abrirTelaPrincipal();
+//
+//        }
+//
+//    }
+
+//    public void abrirTelaPrincipal(){
+//        startActivity(new Intent(this, PrincipalActivity.class));
+//
+//    }
 }
