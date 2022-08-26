@@ -69,7 +69,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     public void cadastrarUser(){
 
-       autenticacao = ConfiguracaoFirebase.getFirebaseAuth();
+       autenticacao = FirebaseHelper.getAuth();
        autenticacao.createUserWithEmailAndPassword(
             user.getEmail(), user.getSenha()
        ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
