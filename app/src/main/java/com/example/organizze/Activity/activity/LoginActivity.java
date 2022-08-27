@@ -3,6 +3,7 @@ package com.example.organizze.Activity.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -74,8 +75,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(LoginActivity.this,
-                            "Login realizado com sucesso", Toast.LENGTH_SHORT).show();
+
+                    abrirTelaPrincipal();
+
                 }else{
 
                     String excecao = "";
@@ -95,6 +97,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void abrirTelaPrincipal(){
+        startActivity(new Intent(this, PrincipalActivity.class));
+        finish();
     }
 
 }
