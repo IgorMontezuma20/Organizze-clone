@@ -19,6 +19,24 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Tema de despesas -->
+    <style name="despesaTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimaryDespesa</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDespesa</item>
+        <item name="colorAccent">@color/colorAccentDespesa</item>
+    </style>
+
+    <!-- Tema de receitas -->
+    <style name="receitaTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimaryReceita</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkReceita</item>
+        <item name="colorAccent">@color/colorAccentReceita</item>
+    </style>
+
     <style name="Theme.Organizze.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Organizze.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
