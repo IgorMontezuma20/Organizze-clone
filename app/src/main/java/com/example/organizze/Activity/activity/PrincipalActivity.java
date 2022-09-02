@@ -23,7 +23,6 @@ import com.example.organizze.Activity.model.Movimentacao;
 import com.example.organizze.Activity.model.User;
 import com.example.organizze.R;
 import com.example.organizze.databinding.ActivityPrincipalBinding;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,14 +47,16 @@ public class PrincipalActivity extends AppCompatActivity {
     private Double resumoUsuario = 0.0;
 
     private List<Movimentacao> movimentacoesList = new ArrayList<>();
-
     private RecyclerView rvMovimentacoes;
     private AdapterMovimentacao adapterMovimentacao;
+    private DatabaseReference movimentacaoRef = FirebaseHelper.getDatabaseReference();
+    private String mesAnoSelecionado;
 
     private FirebaseAuth auth = FirebaseHelper.getAuth();
     private DatabaseReference reference = FirebaseHelper.getDatabaseReference();
     private DatabaseReference userRef;
     private ValueEventListener valueEventListenerUser;
+    private ValueEventListener valueEventListenerMovimentacoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,8 @@ public class PrincipalActivity extends AppCompatActivity {
 //        NavigationUI.setupActionBarWithNavController(this , navController, appBarConfiguration);
 
         iniciaComponentes();
-        atualizarMesesCalendar();
+        configurarCalendar();
+
 
         //Configurar adapter
         adapterMovimentacao = new AdapterMovimentacao(movimentacoesList, this);
@@ -86,21 +88,22 @@ public class PrincipalActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        recuperarResumo();
-    }
 
-    public void atualizarMesesCalendar(){
+
+    public void configurarCalendar(){
         CharSequence meses[] = {"Janeiro", "Fevreiro", "Março", "Abril", "Maio", "Junho", "Julho",
                 "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
+
+        CalendarDay dataAtual = calendarView.getCurrentDate();
+
+        mesAnoSelecionado = String.valueOf((dataAtual.getMonth()+1) + "" + dataAtual.getYear());
 
         calendarView.setTitleMonths(meses);
 
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                mesAnoSelecionado = String.valueOf((date.getMonth()+1) + "" + date.getYear());
 
             }
         });
@@ -117,6 +120,35 @@ public class PrincipalActivity extends AppCompatActivity {
         startActivity(new Intent(this, ReceitasActivity.class));
     }public void adicionarDespesa(View view){
         startActivity(new Intent(this, DespesasActivity.class));
+    }
+
+    public void recuperarMovimentacoes(){
+
+        String emailUsuario = auth.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+
+        movimentacaoRef.child("movimentacao")
+                       .child(idUsuario)
+                       .child(mesAnoSelecionado);
+
+        valueEventListenerMovimentacoes = movimentacaoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                movimentacoesList.clear();
+                for(DataSnapshot dados: snapshot.getChildren()){
+
+                    Movimentacao movimentacao = dados.getValue(Movimentacao.class);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void recuperarResumo(){
@@ -161,9 +193,17 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        recuperarResumo();
+        recuperarMovimentacoes();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         Log.i("Evento", "evento foi removido!");
         userRef.removeEventListener(valueEventListenerUser);
+        movimentacaoRef.removeEventListener(valueEventListenerMovimentacoes);
     }
 }
