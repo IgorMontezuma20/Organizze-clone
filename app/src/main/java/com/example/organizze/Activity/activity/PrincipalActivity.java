@@ -5,26 +5,42 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.organizze.Activity.config.FirebaseHelper;
+import com.example.organizze.Activity.helper.Base64Custom;
+import com.example.organizze.Activity.model.User;
 import com.example.organizze.R;
 import com.example.organizze.databinding.ActivityPrincipalBinding;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+
+import java.text.DecimalFormat;
 
 public class PrincipalActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityPrincipalBinding binding;
-
     private MaterialCalendarView calendarView;
     private TextView tvSaudacao, tvSaldo;
+    private Double despesaTotal = 0.0;
+    private Double receitaTotal = 0.0;
+    private Double resumoUsuario = 0.0;
+
+    private FirebaseAuth auth = FirebaseHelper.getAuth();
+    private DatabaseReference reference = FirebaseHelper.getDatabaseReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +58,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
         iniciaComponentes();
         atualizarMesesCalendar();
-
+        recuperarResumo();
 //        binding.fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -76,6 +92,39 @@ public class PrincipalActivity extends AppCompatActivity {
         startActivity(new Intent(this, ReceitasActivity.class));
     }public void adicionarDespesa(View view){
         startActivity(new Intent(this, DespesasActivity.class));
+    }
+
+    public void recuperarResumo(){
+
+        String emailUsuario = auth.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+        DatabaseReference userRef = reference.child("usuarios").child(idUsuario);
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                User user = snapshot.getValue(User.class);
+
+                despesaTotal = user.getDespesaTotal();
+                receitaTotal = user.getReceitaTotal();
+                resumoUsuario = receitaTotal - despesaTotal;
+
+                //Formatando o valor do resumo
+                DecimalFormat decimalFormat = new DecimalFormat("0.##");
+                String resultadoFormatado = decimalFormat.format(resumoUsuario);
+
+                tvSaudacao.setText("Olá, " + user.getNome());
+                tvSaldo.setText("R$ " + resultadoFormatado);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     @Override
