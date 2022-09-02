@@ -2,6 +2,7 @@ package com.example.organizze.Activity.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -41,6 +42,8 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private FirebaseAuth auth = FirebaseHelper.getAuth();
     private DatabaseReference reference = FirebaseHelper.getDatabaseReference();
+    private DatabaseReference userRef;
+    private ValueEventListener valueEventListenerUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
         iniciaComponentes();
         atualizarMesesCalendar();
-        recuperarResumo();
+
 //        binding.fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -66,6 +69,12 @@ public class PrincipalActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recuperarResumo();
     }
 
     public void atualizarMesesCalendar(){
@@ -98,9 +107,10 @@ public class PrincipalActivity extends AppCompatActivity {
 
         String emailUsuario = auth.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64(emailUsuario);
-        DatabaseReference userRef = reference.child("usuarios").child(idUsuario);
+        userRef = reference.child("usuarios").child(idUsuario);
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        Log.i("onStop", "evento foi adicionado");
+        valueEventListenerUser = userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -132,5 +142,12 @@ public class PrincipalActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_principal);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("Evento", "evento foi removido!");
+        userRef.removeEventListener(valueEventListenerUser);
     }
 }

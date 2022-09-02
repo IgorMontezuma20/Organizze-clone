@@ -32,7 +32,7 @@ public class CadastroActivity extends AppCompatActivity {
         binding = ActivityCadastroBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
+//        getSupportActionBar().setTitle("Cadastro");
 
        binding.butnCadastrar.setOnClickListener(new View.OnClickListener() {
            @Override
