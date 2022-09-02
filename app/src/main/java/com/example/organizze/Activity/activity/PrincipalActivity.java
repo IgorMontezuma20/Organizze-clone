@@ -6,15 +6,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.organizze.Activity.adapter.AdapterMovimentacao;
 import com.example.organizze.Activity.config.FirebaseHelper;
 import com.example.organizze.Activity.helper.Base64Custom;
+import com.example.organizze.Activity.model.Movimentacao;
 import com.example.organizze.Activity.model.User;
 import com.example.organizze.R;
 import com.example.organizze.databinding.ActivityPrincipalBinding;
@@ -29,6 +34,8 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -39,6 +46,11 @@ public class PrincipalActivity extends AppCompatActivity {
     private Double despesaTotal = 0.0;
     private Double receitaTotal = 0.0;
     private Double resumoUsuario = 0.0;
+
+    private List<Movimentacao> movimentacoesList = new ArrayList<>();
+
+    private RecyclerView rvMovimentacoes;
+    private AdapterMovimentacao adapterMovimentacao;
 
     private FirebaseAuth auth = FirebaseHelper.getAuth();
     private DatabaseReference reference = FirebaseHelper.getDatabaseReference();
@@ -62,13 +74,16 @@ public class PrincipalActivity extends AppCompatActivity {
         iniciaComponentes();
         atualizarMesesCalendar();
 
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        //Configurar adapter
+        adapterMovimentacao = new AdapterMovimentacao(movimentacoesList, this);
+
+        //Configurar RecyclerView
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        rvMovimentacoes.setLayoutManager(layoutManager);
+        rvMovimentacoes.setHasFixedSize(true);
+        rvMovimentacoes.setAdapter(adapterMovimentacao);
+
+
     }
 
     @Override
@@ -95,6 +110,7 @@ public class PrincipalActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         tvSaudacao = findViewById(R.id.tvSaudacao);
         tvSaldo = findViewById(R.id.tvSaldo);
+        rvMovimentacoes = findViewById(R.id.rvMovimentos);
     }
 
     public void adicionarReceita(View view){
