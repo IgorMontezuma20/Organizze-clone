@@ -33,11 +33,12 @@ public class PrincipalActivity extends AppCompatActivity {
         binding = ActivityPrincipalBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
+        //binding.toolbar.setTitle("Organizze");
+        //setSupportActionBar(binding.toolbar);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_principal);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_principal);
+//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupActionBarWithNavController(this , navController, appBarConfiguration);
 
         iniciaComponentes();
         atualizarMesesCalendar();

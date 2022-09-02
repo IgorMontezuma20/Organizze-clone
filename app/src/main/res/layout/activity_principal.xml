@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Activity.activity.PrincipalActivity">
 
+    <!--
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,6 +21,7 @@
             app:popupTheme="@style/Theme.Organizze.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
+    -->
 
     <include layout="@layout/content_principal" />
 
