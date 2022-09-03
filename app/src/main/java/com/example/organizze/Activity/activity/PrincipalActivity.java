@@ -49,7 +49,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private List<Movimentacao> movimentacoesList = new ArrayList<>();
     private RecyclerView rvMovimentacoes;
     private AdapterMovimentacao adapterMovimentacao;
-    private DatabaseReference movimentacaoRef = FirebaseHelper.getDatabaseReference();
+    private DatabaseReference movimentacaoRef;
     private String mesAnoSelecionado;
 
     private FirebaseAuth auth = FirebaseHelper.getAuth();
@@ -94,17 +94,24 @@ public class PrincipalActivity extends AppCompatActivity {
         CharSequence meses[] = {"Janeiro", "Fevreiro", "Março", "Abril", "Maio", "Junho", "Julho",
                 "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
 
+        calendarView.setTitleMonths(meses);
+
         CalendarDay dataAtual = calendarView.getCurrentDate();
 
-        mesAnoSelecionado = String.valueOf((dataAtual.getMonth()+1) + "" + dataAtual.getYear());
+        String mesSelecionado = String.format("%02d", (dataAtual.getMonth()+1));
+        mesAnoSelecionado = String.valueOf( mesSelecionado + "" + dataAtual.getYear());
 
-        calendarView.setTitleMonths(meses);
+
 
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                mesAnoSelecionado = String.valueOf((date.getMonth()+1) + "" + date.getYear());
 
+                String mesSelecionado = String.format("%02d", (date.getMonth()+1));
+                mesAnoSelecionado = String.valueOf(mesSelecionado + "" + date.getYear());
+
+                movimentacaoRef.removeEventListener(valueEventListenerMovimentacoes);
+                recuperarMovimentacoes();
             }
         });
     }
@@ -127,9 +134,9 @@ public class PrincipalActivity extends AppCompatActivity {
         String emailUsuario = auth.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64(emailUsuario);
 
-        movimentacaoRef.child("movimentacao")
-                       .child(idUsuario)
-                       .child(mesAnoSelecionado);
+        movimentacaoRef = reference.child("movimentacao")
+                                    .child(idUsuario)
+                                    .child(mesAnoSelecionado);
 
         valueEventListenerMovimentacoes = movimentacaoRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -139,8 +146,11 @@ public class PrincipalActivity extends AppCompatActivity {
                 for(DataSnapshot dados: snapshot.getChildren()){
 
                     Movimentacao movimentacao = dados.getValue(Movimentacao.class);
+                    movimentacoesList.add(movimentacao);
 
                 }
+
+                adapterMovimentacao.notifyDataSetChanged();
 
             }
 
