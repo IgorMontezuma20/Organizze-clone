@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,16 +66,9 @@ public class PrincipalActivity extends AppCompatActivity {
         binding = ActivityPrincipalBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //binding.toolbar.setTitle("Organizze");
-        //setSupportActionBar(binding.toolbar);
-
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_principal);
-//        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-//        NavigationUI.setupActionBarWithNavController(this , navController, appBarConfiguration);
-
         iniciaComponentes();
         configurarCalendar();
-
+        swipe();
 
         //Configurar adapter
         adapterMovimentacao = new AdapterMovimentacao(movimentacoesList, this);
@@ -88,10 +82,36 @@ public class PrincipalActivity extends AppCompatActivity {
 
     }
 
+    public void swipe(){
 
+        ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+
+                int dragFlags = ItemTouchHelper.ACTION_STATE_IDLE;
+                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+
+                
+            }
+        };
+
+        new ItemTouchHelper(itemTouch).attachToRecyclerView(rvMovimentacoes);
+
+    }
 
     public void configurarCalendar(){
-        CharSequence meses[] = {"Janeiro", "Fevreiro", "Março", "Abril", "Maio", "Junho", "Julho",
+        CharSequence meses[] = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
                 "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
 
         calendarView.setTitleMonths(meses);
