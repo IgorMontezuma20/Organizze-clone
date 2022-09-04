@@ -137,6 +137,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
                 movimentacaoRef.child(movimentacao.getKey()).removeValue();
                 adapterMovimentacao.notifyItemRemoved(position);
+                atualizarSaldo();
             }
         });
 
@@ -192,6 +193,24 @@ public class PrincipalActivity extends AppCompatActivity {
         startActivity(new Intent(this, ReceitasActivity.class));
     }public void adicionarDespesa(View view){
         startActivity(new Intent(this, DespesasActivity.class));
+    }
+
+    public void atualizarSaldo(){
+
+        String emailUsuario = auth.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+        userRef = reference.child("usuarios").child(idUsuario);
+
+        if(movimentacao.getTipo().equals("r")){
+            receitaTotal = receitaTotal - movimentacao.getValor();
+            userRef.child("receitaTotal").setValue(receitaTotal);
+        }
+
+        if(movimentacao.getTipo().equals("d")){
+            despesaTotal = despesaTotal - movimentacao.getValor();
+            userRef.child("despesaTotal").setValue(despesaTotal);
+        }
+
     }
 
     public void recuperarMovimentacoes(){

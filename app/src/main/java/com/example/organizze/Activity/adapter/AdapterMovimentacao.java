@@ -44,6 +44,11 @@ public class AdapterMovimentacao extends RecyclerView.Adapter<AdapterMovimentaca
             holder.valor.setTextColor(context.getResources().getColor(R.color.colorAccentDespesa));
             holder.valor.setText("-" + movimentacao.getValor());
         }
+
+        if (movimentacao.getTipo().equals("r")){
+            holder.valor.setTextColor(context.getResources().getColor(R.color.colorAccentReceita));
+            holder.valor.setText("" + movimentacao.getValor());
+        }
     }
 
 
