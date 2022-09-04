@@ -122,7 +122,7 @@ public class PrincipalActivity extends AppCompatActivity {
         alertDialog.setMessage("Você tem certeza que deseja excluir essa movimentação?");
         alertDialog.setCancelable(false);
 
-        alertDialog.setPositiveButton("Confirnar", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int position = viewHolder.getAdapterPosition();
@@ -138,6 +138,7 @@ public class PrincipalActivity extends AppCompatActivity {
                 movimentacaoRef.child(movimentacao.getKey()).removeValue();
                 adapterMovimentacao.notifyItemRemoved(position);
                 atualizarSaldo();
+                Toast.makeText(PrincipalActivity.this, "Movimentação removida", Toast.LENGTH_SHORT).show();
             }
         });
 
